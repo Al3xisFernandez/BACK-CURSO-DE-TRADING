@@ -1,43 +1,62 @@
-const { response } = require("../../app");
-const Usuario = require("../Modelo/Usuario");
+const Usuario = require("../model/Usuario");
+const crypto = require("crypto");
 
-const Servicio = async (usuario, contraseña, nombre) => {
-    try {
-        const id = Math.ramdon();
-        await Usuario.create({ usuario, contraseña, nombre });
-        return true;
-    } catch (error) {
-        return false;
+const seleccionTodaListaServicio = async () => {
+  try {
+    return await Usuario.find({}).select("-__v").select("-_id");
+  } catch (error) {
+    return false;
+  }
+};
+const seleccionUnoListaServicio = async (id) => {
+  try {
+    return await Usuario.find({ id }).select("-__v").select("-_id");
+  } catch (error) {
+    return false;
+  }
+};
+const actualizarUsuarioServicio = async (id, contraseña, nombre) => {
+  try {
+    const response = await Usuario.updateOne({ id : `${id}` }, { contraseña, nombre });
+    if (response.modifiedCount > 0) {
+      return true;
+    } else {
+      return false;
     }
-}
-const ActualizarUsuario = async (usuario, contraseña, nombre) => {
-    try{
-        await  Usuario.updateOne(
-            {usuario : `${usuario}`},
-            {contraseña,
-             nombre
-        });
-        if(response.modifiedCount > 0){
-            return true;
-        }
-    } catch(error){
-        return false;
+  } catch (error) {
+    return false;
+  }
+};
+const guadarUsuarioServicio = async (contraseña, nombre) => {
+  try {
+    const id = crypto.randomUUID();
+    await Usuario.create({
+      id,
+      contraseña,
+      nombre,
+    });
+    return id;
+  } catch (error) {
+    return false;
+  }
+};
+const eliminarUsuarioServicio = async (id) => {
+  try {
+    const resultado = await Usuario.deleteOne({ id });
+    if (resultado.deleteCount > 0) {
+      return true;
+    } else {
+      return false;
     }
-}
-const EliminarUsuario = async (username) => {
-    try{
-        const response = await Usuario.deleteOne({usuario : `${usuario}` });
-        if(response.deleteCount > 0){
-            return true;
-        }else {
-            return false;
-        }
-    }catch(error){
-        return false;
+  } catch (error) {
+    return false;
+  }
+};
 
-    }
-}
-
-
-module.exports = {Servicio, ActualizarUsuario, EliminarUsuario};
-
+module.exports = {
+  seleccionTodaListaServicio,
+  seleccionUnoListaServicio,
+  actualizarUsuarioServicio,
+  guadarUsuarioServicio,
+  eliminarUsuarioServicio,
+};

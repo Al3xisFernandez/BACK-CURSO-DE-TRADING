@@ -1,45 +1,46 @@
 const {
-  Servicio,
-  ActualizarUsuario,
-  EliminarUsuario,
+  seleccionTodaListaServicio,
+  seleccionUnoListaServicio,
+  actualizarUsuarioServicio,
+  guadarUsuarioServicio,
+  eliminarUsuarioServicio,
 } = require("../Servicio/Servicio");
 
-const Controlador = async (req, res) => {
-  try {
-    const { usuario, contraseña, nombre } = req.body;
-    let response = await Servicio(usuario, contraseña, nombre);
-    if (Response) {
-      res.status(200).json({ response: "usuario creado exitosamente" });
-    } else {
-      res.status(400).json({ error: "error al crear usuario" });
-    }
-  } catch (error) {}
+const seleccionTodaListaControlador = async (req, res) => {
+  const usuarios = await seleccionTodaListaServicio();
+  res.json({ usuarios: usuarios });
 };
-const ActualizarUsuariocontrol = async (req, res) => {
-  try {
-    const usuario = req.params.usuario;
-    const { contraseña, nombre } = req.body;
-    let response = await ActualizarUsuario(usuario, contraseña, nombre);
-    if (response) {
-      res.status(201).json({ response: "usuario actualizado exitosamente" });
-    } else {
-      res.status(400).json({ error: "error al actualizar usuario" });
-    }
-  } catch (error) {}
+const seleccionUnoListaControlador = async (req, res) => {
+  const { id } = req.params;
+  const usuario = await seleccionUnoListaServicio(id);
+  res.json({ usuarios: usuario });
 };
-
-const EliminarUsuariovalidacion = async (req, res) => {
+const guardarUsuarioControlador = async (req, res) => {
+  const { contraseña, nombre } = req.body;
+  const response = await guadarUsuarioServicio(contraseña, nombre);
+  res.json({ response: response });
+};
+const actualizarUsuariocontrol = async (req, res) => {
+  const { contraseña, nombre } = req.body;
+  const {id} = req.params;
+  const response = await actualizarUsuarioServicio(id, contraseña, nombre);
+  res.json({ response: response });
+};
+const eliminarUsuarioControl = async (req, res) => {
   try {
-    const usuario = req.params.usuario;
-    const response = await EliminarUsuario(usuario);
-    if (response) {
-      res.status(201).json({ response: "usuario eliminar exitosamente" });
-    } else {
-      res.status(400).json({ error: "error al eliminar usuario" });
-    }
+    const {id} = req.params;
+    const response = await eliminarUsuarioServicio(id);
+    
+      res.status(201).json({ response: "usuario eliminado exitosamente" });
   } catch (error) {
     return false;
   }
 };
 
-module.exports = { Controlador, ActualizarUsuariocontrol, EliminarUsuariovalidacion };
+module.exports = {
+  seleccionTodaListaControlador,
+  seleccionUnoListaControlador,
+  guardarUsuarioControlador,
+  actualizarUsuariocontrol,
+  eliminarUsuarioControl,
+};
