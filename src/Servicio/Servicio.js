@@ -15,9 +15,9 @@ const seleccionUnoListaServicio = async (id) => {
     return false;
   }
 };
-const actualizarUsuarioServicio = async (id, contraseña, nombre) => {
+const actualizarUsuarioServicio = async (id,email, passsword) => {
   try {
-    const response = await Usuario.updateOne({ id : `${id}` }, { contraseña, nombre });
+    const response = await Usuario.updateOne({ id : `${id}` }, { email, passsword });
     if (response.modifiedCount > 0) {
       return true;
     } else {
@@ -27,13 +27,13 @@ const actualizarUsuarioServicio = async (id, contraseña, nombre) => {
     return false;
   }
 };
-const guadarUsuarioServicio = async (contraseña, nombre) => {
+const guadarUsuarioServicio = async (email, passsword) => {
   try {
     const id = crypto.randomUUID();
     await Usuario.create({
       id,
-      contraseña,
-      nombre,
+      email, 
+      passsword
     });
     return id;
   } catch (error) {

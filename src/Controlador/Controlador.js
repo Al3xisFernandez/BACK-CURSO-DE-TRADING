@@ -16,14 +16,15 @@ const seleccionUnoListaControlador = async (req, res) => {
   res.json({ usuarios: usuario });
 };
 const guardarUsuarioControlador = async (req, res) => {
-  const { contraseña, nombre } = req.body;
-  const response = await guadarUsuarioServicio(contraseña, nombre);
-  res.json({ response: response });
+  const { email, passsword } = req.body;
+  const response = await guadarUsuarioServicio(email, passsword);
+  res.header("header", "miHeader");
+  res.status(201).json({ response: response });
 };
 const actualizarUsuariocontrol = async (req, res) => {
-  const { contraseña, nombre } = req.body;
+  const { email, passsword } = req.body;
   const {id} = req.params;
-  const response = await actualizarUsuarioServicio(id, contraseña, nombre);
+  const response = await actualizarUsuarioServicio(id, email, passsword);
   res.json({ response: response });
 };
 const eliminarUsuarioControl = async (req, res) => {

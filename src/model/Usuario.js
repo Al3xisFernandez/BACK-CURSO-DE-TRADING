@@ -7,11 +7,11 @@ const usuarioSchema = new Schema(
       type: String,
       required: true,
     },
-    contraseña: {
+    email: {
       type: String,
       required: true,
     },
-    nombre: {
+    contraseña: {
       type: String,
       required: false,
     },
