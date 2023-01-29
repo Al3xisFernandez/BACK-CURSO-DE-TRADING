@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const UserDetailSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     fname:String,
     lname:String,
@@ -8,4 +8,4 @@ const UserDetailSchema = new mongoose.Schema(
   },
   { collection: "UserInfo" },
 );
-mongoose.model("UserInfo", UserDetailSchema);
+module.exports = mongoose.model("UserInfo", UserSchema);
